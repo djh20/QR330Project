@@ -1,0 +1,8 @@
+# Directories #
+/client_react/node_modules/
+ 
+# OS Files #
+# Package Files #
+*.eslintcache
+# Log Files #
+*.log
