@@ -1,24 +1,15 @@
-# Directories #
-/client_react/node_modules/
- 
-# OS Files #
-# Package Files #
-*.eslintcache
-# Log Files #
-*.log
-
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # dependencies
-/client_react/node_modules
-/client_react/.pnp
+/node_modules
+/.pnp
 .pnp.js
 
 # testing
-/client_react/coverage
+/coverage
 
 # production
-/client_react/build
+/build
 
 # misc
 .DS_Store
