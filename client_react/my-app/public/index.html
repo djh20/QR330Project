@@ -45,8 +45,9 @@
  <script>
       if ('serviceWorker' in navigator) {
         window.addEventListener('load', function() {
-          navigator.serviceWorker.register('worker.js').then(function(registration) {
+          navigator.serviceWorker.register('worker.js').then(function(registration) { 
             console.log('Worker registration successful', registration.scope);
+            rp()
           }, function(err) {
             console.log('Worker registration failed', err);
           }).catch(function(err) {
@@ -56,4 +57,12 @@
       } else {
         console.log('Service Worker is not supported by browser.');
       }
+
+      async function rp(){
+          return await window.Notification.requestPermission();
+      }
     </script>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans&family=Roboto&display=swap');
+</style>

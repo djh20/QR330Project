@@ -1,60 +1,95 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import {VictoryPie} from 'victory'
+import BookStore from '../../stores/BookStore'
+import {observer} from 'mobx-react'
+import ClockStore from '../../stores/ClockStore';
 const useStyles = makeStyles((theme) => ({
     root: {
-    },
-    clockWrapper:{
-        width:'40vw'
+      clockWrapper:{
+        "@media (min-device-width: 481px)": { // PC
+          width:'20vw'
+        },
+      "@media (min-device-width: 320px) and (max-device-width: 480px)": { // Mobile
+          width:'80vh'
+       }
+      }
     }
+    // clockWrapper:{
+    //   "@media (min-device-width: 481px)": { // PC
+    //     width:'40vw'
+    //   },
+    // "@media (min-device-width: 320px) and (max-device-width: 480px)": { // Mobile
+    //     width:'50vh'
+    //  }
+    // }
 }));
 
 
 
 
-export default function Clock(props){
+const Clock = observer( (props) =>{
     const classes = useStyles()
-    const booked = ["Y","Y","Y","Y","N","N","Y","Y","N","N","N","Y","Y","Y","Y","N","N","N","Y","Y","Y","Y","Y","Y"]
+    const bookStore = React.useContext(BookStore.context)
+    const clockStore = React.useContext(ClockStore.context)
+    // ["Y","Y","Y","Y","N","N","Y","Y","N","N","N","Y","Y","Y","Y","N","N","N","Y","Y","Y","Y","Y","Y"].
     const selectedColor = "green"
     const bookedColor = "tomato"
     const notBookedColor = "cyan"
-    const [bookedColorScale,setBookedColorScale] = React.useState([ ])
+    const setStart = props.setStart
+    const setEnd = props.setEnd
+    const start = props.start
+    const end = props.end
     var time = []
     React.useEffect(()=>{
-        for(var i = 0 ; i < booked.length ; i++){
-            if(booked[i] == "Y"){
-                setBookedColorScale( b=> [...b,bookedColor])
+      console.log("reload")
+      clockStore.bookedColorScale = []
+        for(var i = 0 ; i < bookStore.today_book.length ; i++){
+            if(bookStore.today_book[i] == "Y"){
+              clockStore.bookedColorScale.push(bookedColor)
+                // setBookedColorScale( b=> [...b,bookedColor])
             }
             else{
-                setBookedColorScale(b=> [...b,notBookedColor])
+              clockStore.bookedColorScale.push(notBookedColor)
+                // setBookedColorScale(b=> [...b,notBookedColor])
             }
         }
-    },[])
+    },[bookStore.today_book, props.state])
     return(
         <div className={classes.root}>
             <div className={classes.clockWrapper}>
                 <VictoryPie
-                  colorScale={bookedColorScale}
+                  colorScale={clockStore.bookedColorScale}
                   labelPosition="startAngle"
                     events={[{
                         target: "data",
                         eventHandlers: {
                           onClick: (e) => {
-                              console.log(e)
+                              console.log(e.target)
                             return [
                               {
                                 target: "data",
                                 mutation: ({ style }) => {
+                                  console.log(style)
                                   if (style.fill === selectedColor)
                                     return null
                                   else if(style.fill !== bookedColor)
                                     return { style: { fill: selectedColor}}
                                 }
+                              }, {
+                                target: "labels",
+                                mutation: (props) => {
+                                  setEnd(Math.max(end, parseInt(props.text)+1))
+                                  setStart(Math.min(start, parseInt(props.text)))
+                                  console.log(end)
+                                  console.log(start)
+                                }
                               }
                             ];
                           }
                         }
-                      }]}
+                      }
+                      ]}
                       style={{
                         data: {
                           fillOpacity: 0.9, stroke: "#FFFFFF", strokeWidth: 4
@@ -90,4 +125,6 @@ export default function Clock(props){
             </div>
         </div>
     )
-}
+})
+
+export default Clock

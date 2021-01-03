@@ -18,6 +18,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import InboxIcon from '@material-ui/icons/MoveToInbox';
 import MailIcon from '@material-ui/icons/Mail';
 import {Link} from 'react-router-dom'
+import LogoutButton from './components/common/LogoutButton'
 
 const drawerWidth = 240;
 
@@ -83,8 +84,21 @@ const useStyles = makeStyles((theme) => ({
     color:'white'
   },
   contentWrapper:{
-    width : '97vw',
     height: '88vh',
+    "@media (min-device-width: 481px)": { // PC
+      width : '97.5vw',
+    },
+  "@media (min-device-width: 320px) and (max-device-width: 480px)": { // Mobile
+    width : '86vw',
+   }
+  },
+  accountIconArea:{
+    width:'100%',
+  },
+  toolBar:{
+    width: 'auto',
+    disply : 'flex',
+    background:'black'
   }
 }));
 
@@ -93,7 +107,8 @@ export default function Layout(props) {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
   const children = props.children
-
+  const setHasCookie = props.setHasCookie
+  const removeCookie = props.removeCookie
   const handleDrawerOpen = () => {
     setOpen(true);
   };
@@ -111,7 +126,7 @@ export default function Layout(props) {
           [classes.appBarShift]: open,
         })}
       >
-        <Toolbar>
+        <Toolbar className={classes.toolBar}>
           <IconButton
             color="inherit"
             aria-label="open drawer"
@@ -131,6 +146,10 @@ export default function Layout(props) {
             SE Smart 330
           </Typography>
           </Link>
+
+          <div alignSelf="flex-end" className={classes.accountIconArea}>
+              <LogoutButton removeCookie={removeCookie}  setHasCookie={setHasCookie}/>
+          </div>
         </Toolbar>
       </AppBar>
       <Drawer
@@ -149,6 +168,30 @@ export default function Layout(props) {
         </div>
         <Divider />
         <List>
+        <Link   
+        to={{
+            pathname: "/",
+        }}
+        onClick={() => setOpen(!open)}
+        style={{ textDecoration: 'none' }}
+        >
+            <ListItem button>
+              <ListItemIcon><InboxIcon /></ListItemIcon>
+              <ListItemText className={classes.listText}>홈</ListItemText>
+            </ListItem>
+        </Link>
+        <Link   
+        to={{
+            pathname: "/wait",
+        }}
+        onClick={() => setOpen(!open)}
+        style={{ textDecoration: 'none' }}
+        >
+            <ListItem button>
+              <ListItemIcon><InboxIcon /></ListItemIcon>
+              <ListItemText className={classes.listText}>대기열</ListItemText>
+            </ListItem>
+        </Link>
         <Link   
         to={{
             pathname: "/book/A1",

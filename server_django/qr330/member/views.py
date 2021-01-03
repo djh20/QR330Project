@@ -5,10 +5,44 @@ import json
 from .models import Member
 from django.views.decorators.csrf import csrf_exempt
 import re
+import os
+from pywebpush import webpush, WebPushException
+from book.models import Book
+VAPID_PRIVATE_KEY = "I_JscWZUNqyI-vtS9k9k9CP4KqPILnc9--GAJaVw3z8"
+VAPID_PUBLIC_KEY = "BIXjDqYFNcLB86S6hsfCGkWXsaSQUMNDuJCA_moSEJnLzIomlX08WwA25gg1nj24VkVU363afcK-Nt27eQYZrpI"
+ 
+VAPID_CLAIMS = {
+    "sub": "mailto:djh10209@gmail.com"
+}
+ 
+def send_web_push(subscription_information, message_body):
+    return webpush(
+        subscription_info=subscription_information,
+        data=message_body,
+        vapid_private_key=VAPID_PRIVATE_KEY,
+        vapid_claims=VAPID_CLAIMS
+    )
+
+@csrf_exempt
+def updateSubscribe(request):
+    subscribe_info = json.loads(request.body.decode('utf-8'))
+    print(request.COOKIES,"Dasdas")
+    member_id = get_member_info(request.COOKIES)['id']
+    member = Member.objects.get(id=member_id)
+    if subscribe_info != None :
+        member.subscribe = str(subscribe_info['subscribe']).strip("'<>()").replace('\'', '\"').replace("None","\"None\"")
+        print(subscribe_info, 1)
+        print(member.subscribe, 2)
+        member.save()
+        return JsonResponse({'data':"성공"},status=200)
+    return JsonResponse({'data':"실패"},status=400)
+
+
+
 @csrf_exempt
 def login(request):
     loginInfo = json.loads(request.body.decode('utf-8'))
-    if request.method == 'POST':
+    if request.method == 'POST':    
         data = {}
         try:
             member = Member.objects.get(id=loginInfo['id'])
@@ -16,12 +50,14 @@ def login(request):
             if loginInfo['pw'] != member.pw:
                 raise Exception()
             data['id'] = loginInfo['id']
+            data['pw'] = loginInfo['pw']
             jwt_data = encode_jason_to_jwt(data)
-            res = JsonResponse({'message' : '로그인 성공'}, status = 200)
+            res = JsonResponse({'data' : '로그인 성공'}, status = 200)
             res.set_cookie('jwt', jwt_data, max_age=3600)
             return res
             
         except Exception as e:
+            print(e)
             return JsonResponse({ 'message' : '로그인 실패'}, status=452)
 
 def get_qr_url(request):

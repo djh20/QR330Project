@@ -2,7 +2,7 @@ import { observable, action } from 'mobx';
 import {createContext} from "react";
 import requestLogin,{requestRegister} from '../controllers/MemberController'
 class MemberStore{
-  @observable members = []
+  @observable cnt = 0;
   static instance = null;
 
   static getInstance () {

@@ -12,7 +12,7 @@ const CommonSnackbar = observer( (props) => {
       snackbarStore.open = false
     }
     return(
-      <Snackbar open={snackbarStore.open} autoHideDuration={3000} onClose={close}>
+      <Snackbar open={snackbarStore.open} autoHideDuration={2000} onClose={close}>
       {
       snackbarStore.isPositive == true ? (
       <Alert onClose={snackbarStore.openSnackbar} severity="success">

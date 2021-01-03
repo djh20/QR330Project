@@ -11,10 +11,10 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import MemberStore from '../../stores/MemberStore'
 import {observer} from "mobx-react"
-import Modal from '@material-ui/core/Modal';
 import Snackbar from '@material-ui/core/Snackbar';
 import Alert from '@material-ui/lab/Alert';
 import SnackbarStore from '../../stores/SnackbarStore'
+import { useHistory } from "react-router-dom"
 const useStyles = makeStyles((theme) => ({
   root: {
     height: '100vh',
@@ -55,6 +55,7 @@ const SignInView = observer( (props) => {
     const [message, setMessage] = React.useState("");
     const setHasCookie = props.setHasCookie
     const memberStore = useContext(MemberStore.context)
+    const history = useHistory()
     function login(e){
       e.preventDefault()
       if(id.current.value != "" && pw.current.value != ""){
@@ -62,6 +63,7 @@ const SignInView = observer( (props) => {
               if(result.status == 200){
                 setHasCookie(true)
                 SnackbarStore.pushMessage("로그인에 성공했습니다", true)
+                history.push("/")
               }
               else
                 SnackbarStore.pushMessage("로그인에 실패했습니다", false)
