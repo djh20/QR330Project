@@ -18,6 +18,7 @@
 
 * RaspberryPi4는 회의실에 배치
 * 모든 통신은 Https를 사용하며 
+* 모바일앱은 React로 웹 사이트를 구현 후 PWA를 이용하여 제공한다(Android만 가능)
 
 ## 기술 스택 
 * Server
