@@ -58,4 +58,7 @@
 ### 체크인 QR 조회 화면
 ![image](https://user-images.githubusercontent.com/50814086/103472629-ca73f500-4dd2-11eb-965a-6476c086aad1.png)
 * QR은 30초만 사용가능
-
+### QR 인식
+![image](https://user-images.githubusercontent.com/50814086/103472722-0cea0180-4dd4-11eb-8713-b28ceb4864f6.png)
+### 예약 취소 후 모바일앱에서 알림 수신
+![image](https://user-images.githubusercontent.com/50814086/103472694-c09ec180-4dd3-11eb-8812-59956101af28.png)
