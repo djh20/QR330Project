@@ -14,11 +14,14 @@
   
  
 # 시스템 구조도
-![image](https://user-images.githubusercontent.com/50814086/103472363-08234e80-4dd0-11eb-97ec-c455e8bdd254.png)
-
-* RaspberryPi4는 회의실에 배치
+![image](https://user-images.githubusercontent.com/50814086/103472975-e4173b80-4dd6-11eb-87a8-82a941ffe5ed.png)
 * 모든 통신은 Https를 사용하며 
 * 모바일앱은 React로 웹 사이트를 구현 후 PWA를 이용하여 제공한다(Android만 가능)
+
+# Deployment Diagram
+![image](https://user-images.githubusercontent.com/50814086/103472363-08234e80-4dd0-11eb-97ec-c455e8bdd254.png)
+* RaspberryPi4는 회의실에 배치
+
 
 ## 기술 스택 
 * Server
